@@ -1,15 +1,1 @@
-{% extends 'padre.html' %}
-
-{% block title %}Iniciar sesión{% endblock %}
-
-{% block header %}{% endblock %}
-
-{% block content %}
-  <h2>Iniciar sesión</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Ingresar</button>
-  </form>
-  <p>¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a></p>
-{% endblock %} 
+{% extends 'padre.html' %}{% block title %}Ingresar · CineVault{% endblock %}{% block content %}<section class="auth-page shell"><div class="auth-intro"><span class="eyebrow">Volvé a tu colección</span><h1>Tu próxima película te está esperando.</h1><p>Ingresá para acceder a tu lista, puntuar películas y publicar reseñas.</p></div><div class="auth-card"><h2>Iniciar sesión</h2><form method="post">{% csrf_token %}{{ form.as_p }}{% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}<button class="button" type="submit">Ingresar</button></form><p>¿Todavía no tenés cuenta? <a class="text-link" href="{% url 'registro' %}">Registrate gratis</a></p></div></section>{% endblock %}

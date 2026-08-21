@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from .models import Director, Genero, Pelicula
+from .models import Director, EnLista, Genero, Pelicula, Resena
 
 @admin.register(Director)
 class DirectorAdmin(ImportExportModelAdmin):
@@ -17,3 +17,12 @@ class PeliculaAdmin(ImportExportModelAdmin):
     search_fields = ['titulo']
     list_display = ['titulo', 'fecha_lanzamiento', 'director']
     list_filter = ['director', 'generos', 'fecha_lanzamiento']
+
+@admin.register(Resena)
+class ResenaAdmin(admin.ModelAdmin):
+    list_display = ['pelicula', 'usuario', 'puntuacion', 'actualizada']
+    list_filter = ['puntuacion']
+
+@admin.register(EnLista)
+class EnListaAdmin(admin.ModelAdmin):
+    list_display = ['pelicula', 'usuario', 'agregada']

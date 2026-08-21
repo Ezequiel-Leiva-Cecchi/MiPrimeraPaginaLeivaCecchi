@@ -37,4 +37,24 @@ class PeliculaForm(ModelForm):
         return fecha
 
 class BusquedaForm(forms.Form):
-    titulo = forms.CharField(label="Buscar película", max_length=100)
+    q = forms.CharField(label="Buscar", max_length=100, required=False)
+    genero = forms.ModelChoiceField(
+        label="Género", queryset=Genero.objects.all().order_by("nombre"), required=False
+    )
+    orden = forms.ChoiceField(
+        label="Ordenar",
+        required=False,
+        choices=(("recientes", "Más recientes"), ("titulo", "A–Z"), ("clasicos", "Más antiguas")),
+    )
+
+
+class ResenaForm(forms.Form):
+    puntuacion = forms.TypedChoiceField(
+        label="Tu puntuación",
+        coerce=int,
+        choices=((5, "5 · Excelente"), (4, "4 · Muy buena"), (3, "3 · Buena"), (2, "2 · Regular"), (1, "1 · Mala")),
+    )
+    comentario = forms.CharField(
+        label="Reseña", required=False, max_length=800,
+        widget=forms.Textarea(attrs={"rows": 4, "placeholder": "¿Qué te pareció?"}),
+    )
