@@ -3,6 +3,9 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.conf import settings
+from django.templatetags.static import static
+from pathlib import Path
 
 
 class Director(models.Model):
@@ -48,6 +51,16 @@ class Pelicula(models.Model):
     @property
     def anio(self):
         return self.fecha_lanzamiento.year
+
+    @property
+    def poster_url(self):
+        """Usa pósteres versionados en producción y conserva uploads externos."""
+        if not self.imagen:
+            return ""
+        filename = Path(self.imagen.name).name
+        if (settings.BASE_DIR / "static" / "posters" / filename).exists():
+            return static(f"posters/{filename}")
+        return self.imagen.url
 
 
 class Resena(models.Model):
