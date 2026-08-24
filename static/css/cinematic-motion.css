@@ -1,0 +1,1 @@
+.cinematic-reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}.cinematic-reveal.is-visible{opacity:1;transform:none}.movie-card.cinematic-reveal{transition-delay:var(--reveal-delay,0ms)}@media(prefers-reduced-motion:reduce){.cinematic-reveal{opacity:1;transform:none;transition:none}}
