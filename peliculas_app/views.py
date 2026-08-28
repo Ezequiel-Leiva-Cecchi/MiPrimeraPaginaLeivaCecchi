@@ -71,11 +71,14 @@ def buscar_pelicula(request):
         if genero:
             resultados = resultados.filter(generos=genero)
 
-        campo_orden = {
-            "titulo": "titulo",
-            "clasicos": "fecha_lanzamiento",
-        }.get(orden, "-fecha_lanzamiento")
-        resultados = resultados.order_by(campo_orden, "titulo").distinct()
+        campos_orden = {
+            "titulo": ("titulo",),
+            "clasicos": ("fecha_lanzamiento", "titulo"),
+            "valoradas": ("-puntuacion_media", "-total_resenas", "titulo"),
+            "populares": ("-total_guardadas", "-puntuacion_media", "titulo"),
+            "recientes": ("-fecha_lanzamiento", "titulo"),
+        }
+        resultados = resultados.order_by(*campos_orden.get(orden, campos_orden["recientes"])).distinct()
 
     paginator = Paginator(resultados, 12)
     page_obj = paginator.get_page(request.GET.get("page"))
@@ -148,6 +151,9 @@ def alternar_lista(request, pelicula_id):
         request,
         "Película agregada a tu lista." if creado else "Película eliminada de tu lista.",
     )
+    siguiente = request.POST.get("next")
+    if siguiente:
+        return redirect(siguiente)
     return redirect("detalle_pelicula", pelicula_id=pelicula_id)
 
 
@@ -172,6 +178,7 @@ def mi_lista(request):
         EnLista.objects.filter(usuario=request.user)
         .select_related("pelicula", "pelicula__director")
         .prefetch_related("pelicula__generos")
+        .order_by("-id")
     )
     return render(request, "peliculas_app/mi_lista.html", {"items": items})
 
