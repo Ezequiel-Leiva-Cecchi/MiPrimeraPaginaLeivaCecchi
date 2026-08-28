@@ -1,6 +1,6 @@
 # CineVault
 
-Una plataforma cinematográfica full-stack para descubrir películas, armar una lista personal y compartir puntuaciones y reseñas.
+Una plataforma cinematográfica full-stack para descubrir películas, armar una lista personal y compartir puntuaciones, reseñas y recomendaciones entre usuarios.
 
 ## Funcionalidades
 
@@ -12,6 +12,7 @@ Una plataforma cinematográfica full-stack para descubrir películas, armar una 
 - Registro, inicio de sesión, perfil y cambio de contraseña.
 - Lista personal de películas con opción de quitar títulos directamente desde la colección.
 - Puntuaciones y reseñas editables, una por usuario y película.
+- Mensajería privada entre usuarios con bandeja, estado leído/no leído y respuestas rápidas.
 - Administración del catálogo restringida a usuarios `staff`.
 - Panel administrativo con importación y exportación de datos.
 - Diseño responsive con identidad visual de filmoteca y navegación accesible.
@@ -62,4 +63,4 @@ python manage.py check
 python manage.py check --deploy
 ```
 
-La suite cubre acceso público, búsqueda, paginación, permisos, lista personal, reseñas y restricciones de método HTTP.
+La suite cubre acceso público, búsqueda, paginación, permisos, lista personal, reseñas, mensajería privada y restricciones de método HTTP.
