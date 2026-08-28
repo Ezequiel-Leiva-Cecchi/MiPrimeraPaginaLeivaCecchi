@@ -5,16 +5,16 @@ Una plataforma cinematográfica full-stack para descubrir películas, armar una 
 ## Funcionalidades
 
 - Catálogo público con búsqueda por título, descripción o director.
-- Filtros por género y orden cronológico o alfabético.
+- Filtros por género y orden por fecha, título, puntuación o popularidad.
 - Catálogo paginado para mantener una navegación rápida al crecer la colección.
 - Inicio dinámico con selección destacada, estrenos recientes y películas mejor puntuadas.
-- Fichas con póster, sinopsis, géneros, dirección, promedio de puntuación y películas relacionadas.
+- Fichas con póster, sinopsis, géneros, dirección, promedio de puntuación, cantidad de guardados y películas relacionadas.
 - Registro, inicio de sesión, perfil y cambio de contraseña.
-- Lista personal de películas para ver.
+- Lista personal de películas con opción de quitar títulos directamente desde la colección.
 - Puntuaciones y reseñas editables, una por usuario y película.
 - Administración del catálogo restringida a usuarios `staff`.
 - Panel administrativo con importación y exportación de datos.
-- Diseño responsive y navegación accesible.
+- Diseño responsive con identidad visual de filmoteca y navegación accesible.
 
 ## Tecnologías
 

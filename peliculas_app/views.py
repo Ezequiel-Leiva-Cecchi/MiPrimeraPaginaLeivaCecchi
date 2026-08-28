@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from django.db.models import Avg, Count, Q
+from django.db.models import Avg, Count, F, Q
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.views.decorators.http import require_POST
@@ -26,11 +26,14 @@ def _peliculas_con_metricas():
 def index(request):
     catalogo = _peliculas_con_metricas()
     destacada = catalogo.order_by(
-        "-puntuacion_media", "-total_resenas", "-total_guardadas", "-fecha_lanzamiento"
+        F("puntuacion_media").desc(nulls_last=True),
+        "-total_resenas",
+        "-total_guardadas",
+        "-fecha_lanzamiento",
     ).first()
     peliculas = list(catalogo.order_by("-fecha_lanzamiento", "titulo")[:8])
     mejor_valoradas = catalogo.filter(total_resenas__gt=0).order_by(
-        "-puntuacion_media", "-total_resenas", "titulo"
+        F("puntuacion_media").desc(nulls_last=True), "-total_resenas", "titulo"
     )[:4]
 
     generos = {}
@@ -74,11 +77,21 @@ def buscar_pelicula(request):
         campos_orden = {
             "titulo": ("titulo",),
             "clasicos": ("fecha_lanzamiento", "titulo"),
-            "valoradas": ("-puntuacion_media", "-total_resenas", "titulo"),
-            "populares": ("-total_guardadas", "-puntuacion_media", "titulo"),
+            "valoradas": (
+                F("puntuacion_media").desc(nulls_last=True),
+                "-total_resenas",
+                "titulo",
+            ),
+            "populares": (
+                "-total_guardadas",
+                F("puntuacion_media").desc(nulls_last=True),
+                "titulo",
+            ),
             "recientes": ("-fecha_lanzamiento", "titulo"),
         }
-        resultados = resultados.order_by(*campos_orden.get(orden, campos_orden["recientes"])).distinct()
+        resultados = resultados.order_by(
+            *campos_orden.get(orden, campos_orden["recientes"])
+        ).distinct()
 
     paginator = Paginator(resultados, 12)
     page_obj = paginator.get_page(request.GET.get("page"))
@@ -151,9 +164,8 @@ def alternar_lista(request, pelicula_id):
         request,
         "Película agregada a tu lista." if creado else "Película eliminada de tu lista.",
     )
-    siguiente = request.POST.get("next")
-    if siguiente:
-        return redirect(siguiente)
+    if request.POST.get("next") == "mi_lista":
+        return redirect("mi_lista")
     return redirect("detalle_pelicula", pelicula_id=pelicula_id)
 
 
